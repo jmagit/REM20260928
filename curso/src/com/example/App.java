@@ -64,8 +64,19 @@ public class App {
 			default -> throw new IllegalArgumentException("Unexpected value: " + key);
 		};
 		System.out.println(s);
-		var p = new Alumno("kk");
-		fichero();
+		var p = new Alumno("kk", null);
+		p.setApellidos(null);
+		
+		var a = p.getApellidosRecomendado();
+		System.out.println(a.orElse("").toLowerCase());
+		if(a.isPresent()) {
+			System.out.println(a.get());
+		}
+		try {
+			fichero();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		System.runFinalization();
 		fichero();
@@ -136,21 +147,25 @@ public class App {
 		
 	}
 	static void fichero() {
-//		var f = new Fichero();
-//		f.escribe();
-//		try {
-//			f.close();
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		f.escribe();
-		
-		try(var f = new Fichero()) {
-			f.escribe();
+		var f = new Fichero();
+		f.escribe();
+		try {
+			f.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		try {
+			f.escribe();			
+		} catch (Exception e) {
+			throw new CursoException("Algo ha fallado", e);
+		}
+		
+//		try(var f = new Fichero()) {
+//			f.escribe();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }

@@ -1,20 +1,20 @@
-package com.example;
+package com.example.domains;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
-public abstract class Persona {
+public class Persona {
 	protected String nombre;
 	protected String apellidos;
 
-	public Persona(String nombre) {
+	public Persona(@NonNull String nombre) {
 		super();
 		
 		setNombre(nombre);
 	}
 	public Persona(String nombre, String apellidos) {
 		this(nombre);
-		assert apellidos != null : "Apellidos es nulo";
+	
 		setApellidos(apellidos);
 	}
 
@@ -27,17 +27,9 @@ public abstract class Persona {
 		this.nombre = nombre;
 	}
 	public String getApellidos() {
-		if(apellidos == null) throw new NoSuchElementException("Apellidos es nulo");
 		return apellidos;
 	}
-	public boolean hasApellidos() {
-		return apellidos != null;
-	}
-	
-	public Optional<String> getApellidosRecomendado() {
-		return Optional.ofNullable(apellidos);
-	}
-	public void setApellidos(String apellidos) {
+	public void setApellidos(@NonNull String apellidos) {
 		if(apellidos == null || apellidos.isBlank()) throw new IllegalArgumentException("apellidos no puede ser nulo");
 		this.apellidos = apellidos.toUpperCase();
 	}

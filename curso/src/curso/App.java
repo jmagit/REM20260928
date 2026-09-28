@@ -1,5 +1,7 @@
 package curso;
 
+import java.util.Objects;
+
 ///
 /// # Clase de ejemplos del curso
 /// 
@@ -62,5 +64,93 @@ public class App {
 			default -> throw new IllegalArgumentException("Unexpected value: " + key);
 		};
 		System.out.println(s);
+		var p = new Alumno("kk");
+		fichero();
+		
+		System.runFinalization();
+		fichero();
+		
+//		var juego = new Ajedrez();
+//		var t = juego.getTablero();
+//		t.ponPieza(1, 1, new Pieza());
+		var punto = new Punto(10, 9);
+		System.out.println(punto.equals(new Punto(10, 9)) ? "igual": "distinto");
+		
+		// punto.setX(0);
+		
+		var coor = new Coordenada(4, 5);
+		coor.cuadrante();
+		System.out.println(coor.equals(new Coordenada(4, 5)) ? "igual": "distinto");
+		System.out.println(coor);
+		
+	}
+	
+	static record Coordenada(int x, int y) {
+		public byte cuadrante() {
+			if(x > 0 && y > 0) return 1;
+			return 0;
+		}
+	}
+	
+	static class Punto {
+		public final int x, y;
+
+		public Punto(int x, int y) {
+			super();
+			this.x = x;
+			this.y = y;
+		}
+
+		public int getX() {
+			return x;
+		}
+
+//		public void setX(int x) {
+//			this.x = x;
+//		}
+
+		public int getY() {
+			return y;
+		}
+//
+//		public void setY(int y) {
+//			this.y = y;
+//		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(Integer.valueOf(x), Integer.valueOf(y));
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Punto other = (Punto) obj;
+			return x == other.x && y == other.y;
+		}
+		
+	}
+	static void fichero() {
+//		var f = new Fichero();
+//		f.escribe();
+//		try {
+//			f.close();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		f.escribe();
+		
+		try(var f = new Fichero()) {
+			f.escribe();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

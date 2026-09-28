@@ -1,4 +1,4 @@
-package curso;
+package com.example;
 
 public abstract class Persona {
 	protected String nombre;

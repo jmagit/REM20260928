@@ -1,4 +1,4 @@
-package curso;
+package com.example;
 
 import java.util.Objects;
 

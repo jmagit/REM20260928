@@ -1,4 +1,4 @@
-package curso;
+package com.example;
 
 public class Tablero {
 	private Pieza[][] piezas;

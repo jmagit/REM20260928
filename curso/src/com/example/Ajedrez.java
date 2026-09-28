@@ -1,4 +1,4 @@
-package curso;
+package com.example;
 
 public class Ajedrez {
 	private Tablero tablero;

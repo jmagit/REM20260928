@@ -1,4 +1,4 @@
-package curso;
+package com.example;
 
 public class Fichero implements AutoCloseable {
 	static boolean open = false;

@@ -55,6 +55,12 @@ public class App {
 		case 2,4,6,8 -> {s = "par"; break;}
 		default -> throw new IllegalArgumentException("Unexpected value: " + key);
 		}
+		
+		s = switch (key) {
+			case 1,3,5,7 -> "impar";
+			case 2,4,6,8 -> "par";
+			default -> throw new IllegalArgumentException("Unexpected value: " + key);
+		};
 		System.out.println(s);
 	}
 }

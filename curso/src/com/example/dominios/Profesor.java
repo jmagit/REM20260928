@@ -1,4 +1,4 @@
-package com.example;
+package com.example.dominios;
 
 public class Profesor extends Persona {
 	protected double salario = 0;

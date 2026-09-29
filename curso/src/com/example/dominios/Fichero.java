@@ -1,4 +1,4 @@
-package com.example;
+package com.example.dominios;
 
 public class Fichero implements AutoCloseable {
 	static boolean open = false;

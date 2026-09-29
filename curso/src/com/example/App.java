@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Gatherers;
 
+import com.example.dominios.Alumno;
+import com.example.dominios.Fichero;
+import com.example.dominios.Persona;
+import com.example.dominios.Profesor;
+
 ///
 /// # Clase de ejemplos del curso
 /// 

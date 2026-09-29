@@ -1,4 +1,4 @@
-package com.example;
+package com.example.dominios;
 
 public class Alumno extends Persona {
 	public Alumno(String nombre) {

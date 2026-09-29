@@ -1,4 +1,4 @@
-package com.example;
+package com.example.dominios;
 
 import com.example.selladas.Elipsis;
 

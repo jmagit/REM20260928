@@ -1,4 +1,4 @@
-package com.example;
+package com.example.dominios;
 
 public class Ajedrez {
 	private Tablero tablero;

@@ -1,10 +1,13 @@
 package com.example.domains;
 
+import java.util.Optional;
+
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 public class Persona {
 	protected String nombre;
+	@Nullable
 	protected String apellidos;
 
 	public Persona(@NonNull String nombre) {
@@ -26,8 +29,11 @@ public class Persona {
 		if(nombre == null || nombre.isBlank()) throw new IllegalArgumentException("nombre no puede ser nulo");
 		this.nombre = nombre;
 	}
-	public String getApellidos() {
-		return apellidos;
+//	public String getApellidos() {
+//		return apellidos;
+//	}
+	public Optional<String> getApellidos() {
+		return Optional.ofNullable(apellidos);
 	}
 	public void setApellidos(@NonNull String apellidos) {
 		if(apellidos == null || apellidos.isBlank()) throw new IllegalArgumentException("apellidos no puede ser nulo");

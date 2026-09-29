@@ -1,6 +1,9 @@
 package com.example;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Gatherers;
 
 ///
 /// # Clase de ejemplos del curso
@@ -12,10 +15,94 @@ public class App {
 	/// Metodo principal
 	/// @param args Argumentos ...
 	public static void main(String[] args) {
-		ejemplo1();
-
+//		ejemplo1();
+//		flujos();
+		recolectar();
 	}
 
+	static void recolectar() {
+		var numeros = List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+		IO.println("con fold ----------------");
+		numeros.stream()
+				.gather(Gatherers.fold(() -> "", (collector, number) -> collector + number))
+				.findFirst().ifPresent(IO::println);
+		IO.println("con scan \"\" ----------------");
+		numeros.stream()
+				.gather(Gatherers.scan(() -> "", (collector, number) -> collector + number))
+				.forEach(IO::println);
+		IO.println("con 0 ----------------");
+		numeros.stream()
+				.gather(Gatherers.scan(() -> 0, (collector, number) -> collector + number))
+				.forEach(IO::println);
+		IO.println("con windowFixed ----------------");
+		numeros.stream()
+				.gather(Gatherers.windowFixed(3))
+				.forEach(IO::println);
+		IO.println("con windowSliding ----------------");
+		numeros.stream().gather(Gatherers.windowSliding(5))
+				.forEach(IO::println);
+
+	}
+	static void flujos() {
+		List<Persona> aula = new ArrayList<>();
+		aula.add(new Profesor("p1","p1",1000));
+		aula.add(new Profesor("p2","p2",3000));
+		aula.add(new Alumno("a1"));
+		aula.add(new Alumno("a2"));
+		aula.add(new Alumno("a3", "a3"));
+		aula.add(new Alumno("a4"));
+		
+		IO.println(aula.stream()
+			.filter(o -> o instanceof Profesor)
+			.map(o -> (Profesor)o)
+			.map(o -> o.getSalario())
+			.reduce(0.0, (acumulado, item) -> acumulado + item)
+			);
+		IO.println(aula.stream()
+				.filter(o -> o instanceof Profesor)
+				.map(o -> (Profesor)o)
+				.mapToDouble(o -> o.getSalario())
+				.sum()				
+				);
+		var q1 = aula.stream()
+				.filter(o -> o instanceof Profesor)
+				.map(o -> (Profesor)o)
+				.mapToDouble(o -> o.getSalario());
+		IO.println(q1.sum());
+//		IO.println(q1.sum());
+		boolean soloProfes = false, conApellidos = true, paginado = true;
+		int page = 10, rows = 2;
+		var q2 = aula.stream();
+		if(soloProfes)
+			q2 = q2.filter(o -> o instanceof Profesor);
+		if(conApellidos)
+			q2 = q2.filter(o -> o.hasApellidos());
+		if(paginado)
+			q2 = q2.skip(page * rows).limit(rows);
+		q2.forEach(IO::println);
+		
+		List<Integer> listOfIntegers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+		System.out.println("Sequential Stream: ");
+		listOfIntegers.stream()
+			.peek(o -> {
+			try {
+				Thread.sleep(o * 100);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}).forEach(e -> System.out.print(e + " "));
+		System.out.println("\nParallel Stream: ");
+		listOfIntegers.stream().parallel().peek(o -> {
+			try {
+				Thread.sleep(o * 100);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}).sequential().forEach(e -> System.out.print(e + " "));
+
+	}
 	static void ejemplo1() {
 		String s = "SELECT * "
 				+ "FROM table";

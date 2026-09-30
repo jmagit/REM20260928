@@ -23,6 +23,7 @@ import com.example.dominios.Alumno;
 import com.example.dominios.Fichero;
 import com.example.dominios.Persona;
 import com.example.dominios.Profesor;
+import com.example.laboratorios.HilosVirtuales;
 import com.example.restclient.HttpException;
 import com.example.restclient.RestClient;
 import com.example.restclient.RestClientImpl;
@@ -38,16 +39,28 @@ public class App {
 	/// @param args Argumentos ...
 	public static void main(String[] args) {
 //		ejemplo1();
+		// tratamiento de nulos
+//		if(args[0] != null && args[0].equals("fin")) return;
+//		if("fin".equals(args[0])) return;
+		
 //		flujos();
 //		recolectar();
-//		try {
-////			hilosDePlataforma(); // sum = 48943; time = 10148933300 ns
+		
+		var lab = new HilosVirtuales();
+		try {
+//			lab.virtualThreadDemo1();
+//			lab.virtualThreadDemo2();
+//			lab.virtualThreadDemo3();
+//			lab.virtualThreadDemo4();
+//			lab.pinningDemo();
+//			hilosDePlataforma(); // sum = 48943; time = 10148933300 ns
 //			hilosVirtuales();   // sum = 494349; time = 3287750700 ns
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+			IO.println("==================> FIN");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 //		clienteHTTP();
-		clienteRest();
+//		clienteRest();
 	}
 	
 	static void clienteRest() {
@@ -308,14 +321,20 @@ public class App {
 			default -> throw new IllegalArgumentException("Unexpected value: " + key);
 		};
 		System.out.println(s);
-		var p = new Alumno("kk", null);
-		p.setApellidos(null);
+	}
+	
+	static void tratamientoEstrictoDeNulos() {
+		var p = new Alumno("kk", "null");
+//		p.setApellidos(null);
 		
 		var a = p.getApellidosRecomendado();
 		System.out.println(a.orElse("").toLowerCase());
 		if(a.isPresent()) {
 			System.out.println(a.get());
 		}
+	}
+	
+	static void destructores() {
 		try {
 			fichero();
 		} catch (Exception e) {
@@ -323,11 +342,18 @@ public class App {
 		}
 		
 		System.runFinalization();
-		fichero();
+		try {
+			fichero();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 //		var juego = new Ajedrez();
 //		var t = juego.getTablero();
 //		t.ponPieza(1, 1, new Pieza());
+	}
+	
+	static void registros() {
 		var punto = new Punto(10, 9);
 		System.out.println(punto.equals(new Punto(10, 9)) ? "igual": "distinto");
 		
@@ -337,13 +363,34 @@ public class App {
 		coor.cuadrante();
 		System.out.println(coor.equals(new Coordenada(4, 5)) ? "igual": "distinto");
 		System.out.println(coor);
-		
+		System.out.println("%d %d %d %d".formatted(
+				(new Coordenada(4, 5)).cuadrante(),
+				(new Coordenada(4, -5)).cuadrante(),
+				(new Coordenada(-4, -5)).cuadrante(),
+				(new Coordenada(-4, 5)).cuadrante()
+				));
+		System.out.println("%d %d %d %d".formatted(
+				(new Coordenada(0, 0)).cuadrante(),
+				(new Coordenada(0, -1)).cuadrante(),
+				(new Coordenada(-1, -1)).cuadrante(),
+				(new Coordenada(-1, 0)).cuadrante()
+				));
+
 	}
 	
 	static record Coordenada(int x, int y) {
+		/// Cuadrantes
+		///   4 | 1
+		///  -------
+		///   3 | 2
 		public byte cuadrante() {
-			if(x > 0 && y > 0) return 1;
-			return 0;
+			return switch (this) {
+				case Coordenada c when (c.x() >= 0 && c.y() >= 0) -> 1;
+				case Coordenada c when (c.x() >= 0 && c.y() < 0) -> 2;
+				case Coordenada c when (c.x() < 0 && c.y() < 0) -> 3;
+				case Coordenada c when (c.x() < 0 && c.y() >= 0) -> 4;
+				default -> throw new RuntimeException("Caso imposible");
+			};
 		}
 	}
 	

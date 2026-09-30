@@ -23,6 +23,7 @@ import com.example.util.Sleeper;
 public class App {
 
 	public static void main(String[] args) {
+//		ejemplos();
 		notificaciones();
 	}
 	public static void notificaciones() {
@@ -69,12 +70,20 @@ public class App {
 	public static void ejemplos() {
         SubmissionPublisher<Integer> publisher = new SubmissionPublisher<>();
         Flow.Subscriber<Integer> display = new PrintSubscriber();
-        Flow.Subscriber<Integer> cache = new CacheSubscriber(10);
+        Flow.Subscriber<Integer> cache = new CacheSubscriber(4);
         Flow.Processor<Integer, Integer> processor = new GenericProcessor<>(item -> item * 2);
+        Flow.Processor<Integer, Integer> processor2 = new GenericProcessor<>(item -> item - 2);
+        Flow.Processor<Integer, Integer> filtro = new FilterProcessor<Integer>(item -> item % 2 == 0);
 
-        publisher.subscribe(cache);
+        filtro.subscribe(cache);
+        filtro.subscribe(display);
+        publisher.subscribe(filtro);
+//        publisher.subscribe(cache);
+        publisher.subscribe(display);
         publisher.subscribe(processor);
         processor.subscribe(display);
+//	      processor.subscribe(processor2);
+//	      processor2.subscribe(display);
 
         IntStream.range(0, 10).forEach(item -> {
             System.out.println("Generated item: " + item);
